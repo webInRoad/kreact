@@ -12,6 +12,12 @@ function createNode(vnode) {
     node = document.createTextNode("");
   } else if (typeof type === "string") {
     node = document.createElement(type);
+  } else if (typeof type === "function") {
+    node = type.isReactComponent
+      ? createClassComponent(type, props)
+      : createFunctionComponent(type, props);
+  } else if (type === undefined) {
+    node = document.createDocumentFragment();
   }
   // 递归设置子元素
   reconcileChildren(props.children, node);
@@ -24,13 +30,34 @@ function updateNode(node, props) {
   Object.keys(props)
     .filter((p) => p !== "children")
     .forEach((p) => {
-      node[p] = props[p];
+      if (p.slice(0, 2) === "on") {
+        // 事件处理
+        let eventName = p.slice(2).toLowerCase();
+        node.addEventListener(eventName, props[p]);
+      } else {
+        node[p] = props[p];
+      }
     });
 }
 
 function reconcileChildren(childs, node) {
   childs.forEach((child) => {
-    render(child, node);
+    if (Array.isArray(child)) {
+      child.forEach((item) => render(item, node));
+    } else {
+      render(child, node);
+    }
   });
+}
+
+function createFunctionComponent(type, props) {
+  const vnode = type(props);
+  return createNode(vnode);
+}
+
+function createClassComponent(type, props) {
+  const el = new type(props);
+  const vnode = el.render();
+  return createNode(vnode);
 }
 export default { render };
