@@ -19,16 +19,22 @@ const FunctionComponent = function ({ name }) {
 };
 const jsx = (
   <div className="border">
-    <p>手写React</p>
+    <p>
+      手写React<span>111</span>
+    </p>
+    <span>2323</span>
     <ClassComponent name="class组件" />
     <FunctionComponent name="函数组件" />
     <>
       <h1>文本1</h1>
       <h2>文本2</h2>
     </>
+    {/* <ClassComponent name="class组件" />
+    <FunctionComponent name="函数组件" />
+    
     {[1, 2, 3].map((num) => (
       <div>{num}</div>
-    ))}
+    ))} */}
   </div>
 );
 ReactDOM.render(jsx, document.getElementById("root"));
