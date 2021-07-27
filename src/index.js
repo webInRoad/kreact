@@ -1,6 +1,6 @@
 import React from "./kreact";
 import Component from "./kreact/Component";
-import ReactDOM from "./kreact/react-dom";
+import ReactDOM,{useState} from "./kreact/react-dom";
 import "./index.css";
 
 class ClassComponent extends Component {
@@ -10,32 +10,21 @@ class ClassComponent extends Component {
 }
 
 const FunctionComponent = function ({ name }) {
+  console.info(111)
+  const [count,setCount] = useState(0)
+  console.info(333)
   return (
     <div className="border">
-      {name}
-      <button onClick={() => console.log("omg")}>btn</button>
+      {count}
+      <button onClick={() => {setCount(count+1);setCount(count+2);}}>btn</button>
+      {
+        count % 2 ? <span>2</span> : null
+      }
     </div>
   );
 };
 const jsx = (
-  <div className="border">
-    <p>
-      手写React<span>111</span>
-    </p>
-    <span>2323</span>
-    <ClassComponent name="class组件" />
     <FunctionComponent name="函数组件" />
-    <>
-      <h1>文本1</h1>
-      <h2>文本2</h2>
-    </>
-    {/* <ClassComponent name="class组件" />
-    <FunctionComponent name="函数组件" />
-    
-    {[1, 2, 3].map((num) => (
-      <div>{num}</div>
-    ))} */}
-  </div>
 );
 ReactDOM.render(jsx, document.getElementById("root"));
 
